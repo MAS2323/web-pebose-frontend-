@@ -1,0 +1,18 @@
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+
+@theme {
+  --color-pebose-primary: #5d1a1a;
+  --color-pebose-secondary: #6b7b5f;
+  --color-pebose-dark: #3d1212;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: "Inter", sans-serif;
+  }
+}
