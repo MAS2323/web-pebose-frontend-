@@ -1,24 +1,15 @@
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import Nosotros from "./components/Nosotros";
-import Modalidades from "./components/Modalidades";
-import Instalaciones from "./components/Instalaciones";
-import Contacto from "./components/Contacto";
-import Footer from "./components/Footer";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import CEEP from "./pages/CEEP";
 
 function App() {
   return (
-    <div className="min-h-screen bg-white overflow-x-hidden">
-      <Navbar />
-      <main>
-        <Hero />
-        <Nosotros />
-        <Modalidades />
-        <Instalaciones />
-        <Contacto />
-      </main>
-      <Footer />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/ceep" element={<CEEP />} />
+      </Routes>
+    </Router>
   );
 }
 
