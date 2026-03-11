@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, X, GraduationCap, Phone } from "lucide-react";
+import { Menu, X, Phone } from "lucide-react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,15 +31,20 @@ const Navbar = () => {
         <div className="flex items-center justify-between">
           {/* Logo - Responsive */}
           <div className="flex items-center space-x-2 md:space-x-3">
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-white rounded-full flex items-center justify-center flex-shrink-0">
-              <GraduationCap className="w-6 h-6 md:w-8 md:h-8 text-[#5D1A1A]" />
+            {/* Logo PEBOSE - Imagen */}
+            <div className="w-10 h-10 md:w-12 md:h-12 flex-shrink-0 overflow-hidden rounded-full bg-white">
+              <img
+                src="/PEBOSE-logo.png"
+                alt="Logo Centro Bilingüe PEBOSE"
+                className="w-full h-full object-contain"
+              />
             </div>
             <div className="hidden sm:block">
               <h1 className="text-white font-bold text-lg md:text-xl tracking-wider">
                 PEBOSE
               </h1>
               <p className="text-[#6B7B5F] text-[10px] md:text-xs">
-                Centro Educativo
+                Centro Bilingüe
               </p>
             </div>
           </div>
