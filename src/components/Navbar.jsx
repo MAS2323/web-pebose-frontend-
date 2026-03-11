@@ -32,7 +32,7 @@ const Navbar = () => {
           {/* Logo - Responsive */}
           <div className="flex items-center space-x-2 md:space-x-3">
             {/* Logo PEBOSE - Imagen */}
-            <div className="w-10 h-10 md:w-12 md:h-12 flex-shrink-0 overflow-hidden rounded-full bg-black-200">
+            <div className="w-10 h-10 md:w-12 md:h-12 flex-shrink-0">
               <img
                 src="/PEBOSE-logo.png"
                 alt="Logo Centro Bilingüe PEBOSE"
