@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   Stethoscope,
   FlaskConical,
@@ -216,9 +217,10 @@ const EspecialidadesGrid = () => {
         {/* Grid de especialidades */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {especialidades.map((esp) => (
-            <div
+            <Link
               key={esp.id}
-              className="group bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-[#c9a227]/30 hover:-translate-y-1 cursor-pointer"
+              to={`/ceep/especialidad/${esp.id}`}
+              className="group bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-[#c9a227]/30 hover:-translate-y-1 cursor-pointer block"
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="w-14 h-14 bg-[#1a365d]/10 rounded-xl flex items-center justify-center group-hover:bg-[#1a365d] transition-colors duration-300">
@@ -259,7 +261,7 @@ const EspecialidadesGrid = () => {
                   Ver detalles →
                 </span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
@@ -269,12 +271,12 @@ const EspecialidadesGrid = () => {
             ¿No sabes qué especialidad elegir? Te ayudamos a decidir según tus
             intereses.
           </p>
-          <a
-            href="#contacto-ceep"
+          <Link
+            to="/ceep#contacto-ceep"
             className="inline-flex items-center px-8 py-4 bg-[#1a365d] text-white font-semibold rounded-full hover:bg-[#152c4d] transition-all duration-300 hover:shadow-lg"
           >
             Asesoramiento Gratuito
-          </a>
+          </Link>
         </div>
       </div>
     </section>
