@@ -60,12 +60,8 @@ const Footer = () => {
                 <h2 className="text-white font-bold text-lg md:text-xl tracking-wider">
                   PEBOSE
                 </h2>
-                <p
-                  className={`text-[10px] md:text-xs ${isCEEP ? "text-[#c9a227]" : "text-[#6B7B5F]"}`}
-                >
-                  {isCEEP
-                    ? "Centro de Estudios Especializados"
-                    : "Centro Bilingüe"}
+                <p className={`text-[10px] md:text-xs "text-[#6B7B5F]"}`}>
+                  Centro Bilingüe
                 </p>
               </div>
             </Link>
