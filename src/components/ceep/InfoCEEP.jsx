@@ -81,7 +81,9 @@ const InfoCEEP = () => {
                 <Mail className="w-6 h-6 text-[#c9a227] flex-shrink-0" />
                 <div>
                   <p className="font-semibold mb-1">Email</p>
-                  <p className="text-white/80 text-sm">ceep@pebose.edu</p>
+                  <p className="text-white/80 text-sm">
+                    info@centrobilingüepebose.com
+                  </p>
                 </div>
               </div>
 

@@ -63,8 +63,8 @@ const Contacto = () => {
     {
       icon: Mail,
       label: "Email",
-      value: "contacto@pebose.edu",
-      href: "mailto:contacto@pebose.edu",
+      value: "info@centrobilingüepebose.com",
+      href: "mailto:info@centrobilingüepebose.com",
     },
     {
       icon: MapPin,

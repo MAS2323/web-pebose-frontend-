@@ -8,7 +8,6 @@ import {
   Phone,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-const isCEEP = location.pathname.includes("/ceep");
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
