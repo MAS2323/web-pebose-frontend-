@@ -7,6 +7,7 @@ import {
   Mail,
   Phone,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -46,19 +47,21 @@ const Footer = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 md:gap-12 mb-8 md:mb-12">
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-2">
-            <div className="flex items-center space-x-3 mb-4 md:mb-6">
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-white rounded-full flex items-center justify-center flex-shrink-0">
-                <GraduationCap className="w-6 h-6 md:w-8 md:h-8 text-[#5D1A1A]" />
+            {/* Logo */}
+            <Link to="/" className="flex items-center space-x-2 md:space-x-3">
+              <div className="w-10 h-10 md:w-12 md:h-12 flex-shrink-0 overflow-hidden rounded-full bg-white">
+                <img
+                  src="/PEBOSE-logo.png"
+                  alt="Logo PEBOSE"
+                  className="w-full h-full object-contain"
+                />
               </div>
-              <div>
-                <h3 className="text-xl md:text-2xl font-bold tracking-wider text-white">
+              <div className="hidden sm:block">
+                <h1 className="text-white font-bold text-lg md:text-xl tracking-wider">
                   PEBOSE
-                </h3>
-                <p className="text-[#6B7B5F] text-xs md:text-sm">
-                  Centro Educativo
-                </p>
+                </h1>
               </div>
-            </div>
+            </Link>
             <p className="text-white/90 mb-4 md:mb-6 leading-relaxed text-sm md:text-base max-w-sm">
               Formando líderes íntegros desde 2014. Comprometidos con la
               excelencia académica y la educación integral de nuestros
@@ -72,7 +75,7 @@ const Footer = () => {
                 className="flex items-center space-x-2 text-white hover:text-[#6B7B5F] transition-colors text-sm"
               >
                 <Phone className="w-4 h-4" />
-                <span>+52 (XXX) XXX-XXXX</span>
+                <span>+240 (222) 505-012</span>
               </a>
               <a
                 href="mailto:contacto@pebose.edu"

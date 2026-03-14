@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { heroService } from "../services/admin/heroService";
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import Nosotros from "../components/Nosotros";
@@ -5,14 +8,31 @@ import Modalidades from "../components/Modalidades";
 import Instalaciones from "../components/Instalaciones";
 import Contacto from "../components/Contacto";
 import Footer from "../components/Footer";
-import { Link } from "react-router-dom";
 
 function Home() {
+  const [heroData, setHeroData] = useState(null);
+
+  useEffect(() => {
+    // Opcional: Cargar datos del hero desde el backend
+    const loadHeroData = async () => {
+      try {
+        const response = await heroService.getPublic();
+        setHeroData(response.data);
+      } catch (error) {
+        console.log("Usando datos estáticos del Hero");
+      }
+    };
+
+    loadHeroData();
+  }, []);
+
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
       <Navbar />
       <main>
-        <Hero />
+        {/* Si heroData existe, podrías pasarlo como prop al componente Hero */}
+        <Hero heroData={heroData} />
+
         <Nosotros />
         <Modalidades />
         <Instalaciones />

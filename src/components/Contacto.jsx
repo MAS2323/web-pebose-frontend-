@@ -8,6 +8,7 @@ import {
   CheckCircle,
   Loader2,
 } from "lucide-react";
+import { API } from "../config/api";
 
 const Contacto = () => {
   const [formData, setFormData] = useState({
@@ -25,7 +26,7 @@ const Contacto = () => {
     setEnviando(true);
 
     try {
-      const response = await fetch("http://localhost:8000/contacto/", {
+      const response = await fetch(`${API}/contacto/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -56,8 +57,8 @@ const Contacto = () => {
     {
       icon: Phone,
       label: "Teléfono",
-      value: "+52 (XXX) XXX-XXXX",
-      href: "tel:+52",
+      value: "+240 222 505 012",
+      href: "tel:+240",
     },
     {
       icon: Mail,
@@ -68,7 +69,7 @@ const Contacto = () => {
     {
       icon: MapPin,
       label: "Dirección",
-      value: "Av. Principal #123, Ciudad",
+      value: "Rotonda Arab de Malabo 2, Semu",
       href: "#",
     },
     {
