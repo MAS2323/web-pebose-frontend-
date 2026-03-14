@@ -8,7 +8,7 @@ import {
   Phone,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-
+const isCEEP = location.pathname.includes("/ceep");
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
@@ -57,9 +57,16 @@ const Footer = () => {
                 />
               </div>
               <div className="hidden sm:block">
-                <h1 className="text-white font-bold text-lg md:text-xl tracking-wider">
+                <h2 className="text-white font-bold text-lg md:text-xl tracking-wider">
                   PEBOSE
-                </h1>
+                </h2>
+                <p
+                  className={`text-[10px] md:text-xs ${isCEEP ? "text-[#c9a227]" : "text-[#6B7B5F]"}`}
+                >
+                  {isCEEP
+                    ? "Centro de Estudios Especializados"
+                    : "Centro Bilingüe"}
+                </p>
               </div>
             </Link>
             <p className="text-white/90 mb-4 md:mb-6 leading-relaxed text-sm md:text-base max-w-sm">
