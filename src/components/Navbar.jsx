@@ -315,7 +315,7 @@ const Navbar = () => {
                   rel="noopener noreferrer"
                   className="text-[#6B7B5F] hover:text-white transition-colors font-semibold"
                 >
-                  Tecnologías Mas
+                  Tecnologías Más
                 </a>
               </p>
             </div>
