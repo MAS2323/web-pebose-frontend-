@@ -84,7 +84,7 @@ const Footer = () => {
                 className="flex items-center space-x-2 text-white hover:text-[#6B7B5F] transition-colors text-sm"
               >
                 <Mail className="w-4 h-4" />
-                <span>contacto@pebose.edu</span>
+                <span>info@centrobilingüepebose.com</span>
               </a>
             </div>
 

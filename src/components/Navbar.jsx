@@ -227,7 +227,7 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <div className="flex items-center space-x-3 lg:hidden">
             <a
-              href="tel:+521234567890"
+              href="tel:+240 222 505 012"
               className={`w-10 h-10 rounded-full flex items-center justify-center text-white transition-colors ${
                 isCEEP ? "bg-[#c9a227]" : "bg-[#6B7B5F]"
               }`}
