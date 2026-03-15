@@ -298,11 +298,26 @@ const Navbar = () => {
             <div className="pt-8 text-center">
               <p className="text-white/60 text-sm mb-2">¿Tienes preguntas?</p>
               <a
-                href="tel:+521234567890"
+                href="tel:+240222505012"
                 className="text-white text-xl font-bold hover:text-[#6B7B5F] transition-colors"
               >
-                (123) 456-7890
+                (222) 505 012
               </a>
+            </div>
+
+            {/* Segunda fila: Powered by - CENTRADO */}
+            <div className="text-center pt-4 border-t border-white/10">
+              <p className="text-[#6B7B5F] text-xs md:text-sm">
+                Powered by{" "}
+                <a
+                  href="https://tecnologias-mas.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#6B7B5F] hover:text-white transition-colors font-semibold"
+                >
+                  Tecnologías Mas
+                </a>
+              </p>
             </div>
           </div>
         </div>
