@@ -2,7 +2,8 @@
 
 // 🔗 URL base de la API
 // ✅ Vite usa import.meta.env (NO process.env)
-export const API = import.meta.env.VITE_API_URL || "http://localhost:4000/api"; // ← Fallback para desarrollo
+export const API =
+  import.meta.env.VITE_API_URL || "https://pebose-backend.onrender.com"; // ← Fallback para desarrollo
 
 // 🗺️ Endpoints organizados por módulo
 export const ENDPOINTS = {
