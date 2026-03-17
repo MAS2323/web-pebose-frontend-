@@ -49,12 +49,28 @@ export const AdminDashboard = () => {
     fetchStats();
   }, []);
 
+  // 🔧 Corrige la función fetchStats:
   const fetchStats = async () => {
     try {
-      const response = await axios.get(API.admin.stats);
-      setStats(response.data);
+      // ✅ Verifica que API.admin.stats esté definido en config/api.js
+      const response = await axios.get(`${API}/admin/stats`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      // ✅ Backend devuelve: { success: true,  { stats: {...} } }
+      // Accede a response.data.data.stats, NO response.data
+      setStats(response.data?.data?.stats || {});
     } catch (error) {
-      console.error("Error fetching stats:", error);
+      console.error("❌ Error fetching stats:", error.message);
+      // Fallback a stats vacíos para evitar errores en el render
+      setStats({
+        contactos_pendientes: 0,
+        inscripciones_mes: 0,
+        visitas_web: 0,
+        especialidades_activas: 0,
+      });
     } finally {
       setIsLoading(false);
     }

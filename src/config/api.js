@@ -1,83 +1,98 @@
-// ============================================
-// CONFIGURACIÓN CENTRALIZADA DE API - PEBOSE
-// ============================================
+// frontend/src/config/api.js
 
-const BASE_URL = "http://localhost:8000/api";
+// 🔗 URL base de la API
+// ✅ Vite usa import.meta.env (NO process.env)
+export const API = import.meta.env.VITE_API_URL || "http://localhost:4000/api"; // ← Fallback para desarrollo
 
-// Endpoints organizados por módulo
-export const API = {
-  // Hero Slider
-  hero: {
-    public: `${BASE_URL}/hero/public`,
-    slides: `${BASE_URL}/hero/slides`,
-    uploadImage: `${BASE_URL}/hero/upload-image`,
-    deleteImage: (publicId) =>
-      `${BASE_URL}/hero/images/${encodeURIComponent(publicId)}`,
-    slideById: (id) => `${BASE_URL}/hero/slides/${id}`,
+// 🗺️ Endpoints organizados por módulo
+export const ENDPOINTS = {
+  // 🔐 AUTH
+  AUTH: {
+    LOGIN: `${API}/auth/login`, // POST
+    PROFILE: `${API}/auth/profile`, // GET (con token)
+    LOGOUT: `${API}/auth/logout`, // POST (con token)
   },
 
-  // Admin
-  admin: {
-    stats: `${BASE_URL}/admin/stats`,
-    login: `${BASE_URL}/admin/login`,
-    me: `${BASE_URL}/admin/me`,
-    users: `${BASE_URL}/admin/users`,
-    setup: `${BASE_URL}/admin/setup`,
+  // 🎨 HERO SLIDER
+  HERO: {
+    PUBLIC: `${API}/hero/public`, // GET (público)
+    LIST: `${API}/hero`, // GET (admin)
+    CREATE: `${API}/hero`, // POST (admin, multipart)
+    UPDATE: (id) => `${API}/hero/${id}`, // PUT (admin)
+    DELETE: (id) => `${API}/hero/${id}`, // DELETE (admin)
   },
 
-  // Imágenes (genérico)
-  images: {
-    upload: `${BASE_URL}/images/upload`,
-    deleteByUrl: `${BASE_URL}/images/delete-by-url`,
-    deleteById: (publicId) =>
-      `${BASE_URL}/images/${encodeURIComponent(publicId)}`,
+  // 🛡️ ADMIN PANEL (ejemplo de endpoint adicional)
+  ADMIN: {
+    STATS: `${API}/admin/stats`, // ← Agrega esto
+    DASHBOARD: `${API}/admin/dashboard`,
   },
 
-  // Especialidades CEEP
-  especialidades: {
-    list: `${BASE_URL}/especialidades`,
-    byId: (id) => `${BASE_URL}/especialidades/${id}`,
-    bySlug: (slug) => `${BASE_URL}/especialidades/slug/${slug}`,
-  },
-
-  // Contacto
-  contacto: {
-    create: `${BASE_URL}/contacto`,
-    list: `${BASE_URL}/contacto`,
-  },
-
-  // Inscripciones
-  inscripciones: {
-    create: `${BASE_URL}/inscripciones`,
-    list: `${BASE_URL}/inscripciones`,
+  // 🏢 INSTALACIONES
+  INSTALACIONES: {
+    PUBLIC: `${API}/instalaciones/public`, // GET (público)
+    LIST: `${API}/instalaciones`, // GET (admin)
+    CREATE: `${API}/instalaciones`, // POST (admin)
+    UPDATE: (id) => `${API}/instalaciones/${id}`,
+    DELETE: (id) => `${API}/instalaciones/${id}`,
   },
 };
 
-// Helper para hacer fetch con manejo de errores
-export const fetchApi = async (url, options = {}) => {
-  const defaultOptions = {
+// ✅ Función fetchApi reutilizable con manejo de errores
+export const fetchApi = async (endpoint, options = {}) => {
+  const token = localStorage.getItem("token");
+
+  const config = {
     headers: {
       "Content-Type": "application/json",
+      ...(token && { Authorization: `Bearer ${token}` }),
       ...options.headers,
     },
+    ...options,
   };
 
-  // Si es FormData, no agregar Content-Type (el navegador lo pone automáticamente)
+  // Si es FormData (subida de archivos), quitar Content-Type JSON
   if (options.body instanceof FormData) {
-    delete defaultOptions.headers["Content-Type"];
+    delete config.headers["Content-Type"];
   }
 
-  const response = await fetch(url, { ...defaultOptions, ...options });
+  try {
+    // Construir URL completa
+    const url = endpoint.startsWith("http")
+      ? endpoint
+      : `${API}${endpoint.startsWith("/") ? endpoint : `/${endpoint}`}`;
 
-  if (!response.ok) {
-    const error = await response
-      .json()
-      .catch(() => ({ detail: "Error desconocido" }));
-    throw new Error(error.detail || `HTTP ${response.status}`);
+    const response = await fetch(url, config);
+
+    // Manejar errores HTTP
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}));
+      throw new Error(error.message || `HTTP ${response.status}`);
+    }
+
+    // Respuesta vacía (204 No Content)
+    if (response.status === 204) return null;
+
+    return await response.json();
+  } catch (error) {
+    console.error("❌ Error en fetchApi:", error.message);
+
+    // Si es error 401, cerrar sesión automáticamente
+    if (error.message?.includes("401")) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("admin");
+      window.location.href = "/admin/login";
+    }
+
+    throw error;
   }
-
-  return response.json();
+};
+export const API_COMPAT = {
+  admin: {
+    stats: ENDPOINTS.ADMIN.STATS,
+    dashboard: ENDPOINTS.ADMIN.DASHBOARD,
+  },
 };
 
-// Exportar base URL por si se necesita
-export { BASE_URL };
+// 🎯 Exportación por defecto para compatibilidad
+export default { API, ENDPOINTS, fetchApi };

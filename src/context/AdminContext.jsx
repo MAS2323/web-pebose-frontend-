@@ -3,6 +3,7 @@ import { authService } from "../services/admin/authService";
 
 const AdminContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAdmin = () => {
   const context = useContext(AdminContext);
   if (!context) {

@@ -9,7 +9,7 @@ export const useHero = () => {
 
   const token = localStorage.getItem("token");
 
-  // ✅ Obtener slides - ACCEDER A result.data (NO result.slides)
+  // ✅ Obtener slides
   const fetchSlides = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -21,21 +21,16 @@ export const useHero = () => {
         },
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
       const result = await response.json();
 
-      console.log("📦 Backend response:", result);
-
-      // ✅ Backend devuelve: { success: true, count: N, data: [...] }
-      // Los slides están en result.data, NO en result.slides
+      // Backend devuelve: { success: true, count: N, data: [...] }
       setSlides(result.data || []);
     } catch (err) {
       console.error("❌ Error fetching slides:", err.message);
       setError(err.message);
-      setSlides([]); // Fallback a array vacío
+      setSlides([]);
     } finally {
       setLoading(false);
     }
@@ -59,7 +54,7 @@ export const useHero = () => {
       }
 
       const result = await response.json();
-      await fetchSlides(); // Refrescar lista
+      await fetchSlides();
       return result.data;
     } catch (err) {
       console.error("❌ Error creating slide:", err.message);
@@ -93,10 +88,10 @@ export const useHero = () => {
     }
   };
 
-  // ✅ Eliminar slide
+  // ✅ Eliminar slide - CORREGIDO (sin mongoose)
   const deleteSlide = async (id) => {
-    // ✅ Validar ID antes de hacer fetch
-    if (!id || id === "undefined" || id === "null") {
+    // ✅ Validación simple de ID (sin mongoose)
+    if (!id || id === "undefined" || id === "null" || id.trim() === "") {
       throw new Error("ID inválido para eliminar");
     }
 
@@ -104,7 +99,7 @@ export const useHero = () => {
       const response = await fetch(`${API}/hero/${id}`, {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
@@ -114,15 +109,14 @@ export const useHero = () => {
         throw new Error(err.message || "Error eliminando slide");
       }
 
-      // ✅ Backend devuelve: { success: true, message: "..." }
-      // No hay data.data aquí, solo confirmación
-      await fetchSlides(); // Refrescar lista
+      await fetchSlides();
       return true;
     } catch (err) {
       console.error("❌ Error deleting slide:", err.message);
       throw err;
     }
   };
+
   useEffect(() => {
     fetchSlides();
   }, [fetchSlides]);

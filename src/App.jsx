@@ -21,6 +21,8 @@ import { AdminEspecialidades } from "./pages/admin/AdminEspecialidades";
 import { AdminCEEP } from "./pages/admin/AdminCEEP";
 import { AdminContactos } from "./pages/admin/AdminContactos";
 import { AdminConfig } from "./pages/admin/AdminConfig";
+import CreateSlide from "./pages/admin/CreateSlide";
+import { EditSlide } from "./pages/admin/EditSlide";
 
 // Componente para proteger rutas de admin
 const ProtectedRoute = ({ children }) => {
@@ -85,6 +87,9 @@ function AppRoutes() {
         <Route path="ceep" element={<AdminCEEP />} />
         <Route path="contactos" element={<AdminContactos />} />
         <Route path="config" element={<AdminConfig />} />
+        <Route path="hero/nuevo" element={<CreateSlide />} />{" "}
+        {/* ← NUEVA RUTA */}
+        <Route path="hero/editar/:id" element={<EditSlide />} />
       </Route>
 
       {/* Redirección 404 */}

@@ -1,3 +1,4 @@
+// frontend/src/components/Hero.jsx
 import { ArrowRight, Play, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { API } from "../config/api";
@@ -14,12 +15,28 @@ const Hero = () => {
     { number: "95%", label: "Satisfacción" },
   ];
 
-  // Slides por defecto
+  // ✅ Slides de respaldo con placeholders (NO rutas locales)
   const defaultSlides = [
-    { image: "/images/aula-moderna.jpg", alt: "Aula moderna" },
-    { image: "/images/estudiantes.jpg", alt: "Estudiantes" },
-    { image: "/images/instalaciones.jpg", alt: "Instalaciones" },
-    { image: "/images/eventos.jpg", alt: "Eventos" },
+    {
+      image:
+        "https://placehold.co/1920x1080/5D1A1A/FFFFFF?text=Aula+Moderna&font=roboto",
+      alt: "Aula moderna",
+    },
+    {
+      image:
+        "https://placehold.co/1920x1080/6B7B5F/FFFFFF?text=Estudiantes&font=roboto",
+      alt: "Estudiantes",
+    },
+    {
+      image:
+        "https://placehold.co/1920x1080/5D1A1A/FFFFFF?text=Instalaciones&font=roboto",
+      alt: "Instalaciones",
+    },
+    {
+      image:
+        "https://placehold.co/1920x1080/6B7B5F/FFFFFF?text=Eventos&font=roboto",
+      alt: "Eventos",
+    },
   ];
 
   useEffect(() => {
@@ -30,19 +47,26 @@ const Hero = () => {
 
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-        const data = await response.json();
-        console.log("✅ [Hero] Slides cargados:", data.length);
+        const result = await response.json();
+        console.log("✅ [Hero] Respuesta del backend:", result);
 
-        const formatted = data.map((s) => ({
+        // El backend devuelve: { success: true, count: N,  [...] }
+        const slidesData = result.data || result.slides || [];
+
+        console.log("✅ [Hero] Slides cargados:", slidesData.length);
+
+        const formatted = slidesData.map((s) => ({
           image: s.imagen_url,
           alt: s.titulo || "Imagen PEBOSE",
           titulo: s.titulo,
           subtitulo: s.subtitulo,
         }));
 
+        // Usar slides del backend si existen, sino usar defaults
         setSlides(formatted.length > 0 ? formatted : defaultSlides);
       } catch (error) {
-        console.error("❌ [Hero] Error:", error);
+        console.error("❌ [Hero] Error cargando slides:", error);
+        console.warn("⚠️ Usando slides por defecto");
         setSlides(defaultSlides);
       } finally {
         setLoading(false);
@@ -79,7 +103,7 @@ const Hero = () => {
       id="inicio"
       className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 md:pt-20"
     >
-      {/* Background con imágenes de Cloudinary */}
+      {/* Background con imágenes */}
       <div className="absolute inset-0">
         {slides.map((slide, index) => (
           <div
@@ -92,9 +116,26 @@ const Hero = () => {
               src={slide.image}
               alt={slide.alt}
               className="w-full h-full object-cover"
+              crossOrigin="anonymous" // ← Agregar esto
+              referrerPolicy="no-referrer" // ← Agregar esto
+              loading="eager" // ← Cambiar a eager para imágenes críticas
               onError={(e) => {
-                console.error("❌ Error cargando:", slide.image);
-                e.target.src = "/images/fallback.jpg";
+                // Evitar loop infinito
+                if (e.target.dataset.fallback === "true") {
+                  console.warn("❌ Fallback también falló para:", slide.image);
+                  e.target.style.display = "none";
+                  return;
+                }
+
+                // Placeholder externo para desarrollo
+                const text = encodeURIComponent(slide.alt || "PEBOSE");
+                e.target.src = `https://placehold.co/1920x1080/5D1A1A/FFFFFF?text=${text}&font=roboto`;
+                e.target.dataset.fallback = "true";
+
+                console.warn(
+                  "⚠️ Imagen no encontrada, usando placeholder:",
+                  slide.image,
+                );
               }}
             />
             <div className="absolute inset-0 bg-gradient-to-r from-[#5D1A1A]/90 via-[#5D1A1A]/70 to-[#5D1A1A]/50" />

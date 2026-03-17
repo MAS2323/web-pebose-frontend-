@@ -1,51 +1,136 @@
 // frontend/src/services/authService.js
 import axios from "axios";
-import { API } from "../../config/api";
+import { API, ENDPOINTS } from "../../config/api";
+
+// 🔐 Interceptor para agregar token automáticamente
+axios.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error),
+);
+
+// 🔐 Interceptor para manejar errores de autenticación
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Token inválido o expirado → cerrar sesión
+      authService.logout();
+      window.location.href = "/admin/login";
+    }
+    return Promise.reject(error);
+  },
+);
 
 export const authService = {
-  // ← Named export (con 'export' antes de 'const')
+  /**
+   * Login de administrador
+   * @param {string} username
+   * @param {string} password
+   * @returns {Promise<{success: boolean, data: {admin: object, token: string}}>}
+   */
   login: async (username, password) => {
-    const formData = new URLSearchParams();
-    formData.append("username", username);
-    formData.append("password", password);
-
-    const response = await axios.post(API.admin.login, formData.toString(), {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+    // ✅ Ruta correcta: /api/auth/login (NO /api/admin/login)
+    // ✅ Formato: JSON (NO form-urlencoded)
+    const response = await axios.post(
+      `${API}/auth/login`,
+      {
+        username,
+        password,
       },
-    });
+      {
+        headers: {
+          "Content-Type": "application/json", // ← Importante: JSON
+        },
+      },
+    );
+
+    // Guardar token y usuario en localStorage
+    if (response.data?.success && response.data?.data?.token) {
+      localStorage.setItem("token", response.data.data.token);
+      localStorage.setItem("admin", JSON.stringify(response.data.data.admin));
+    }
+
     return response.data;
   },
 
-  logout: () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+  /**
+   * Logout - Cierra sesión y limpia storage
+   */
+  logout: async () => {
+    try {
+      // Opcional: Notificar al backend (si tienes el endpoint)
+      const token = localStorage.getItem("token");
+      if (token) {
+        await axios.post(
+          `${API}/auth/logout`,
+          {},
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
+      }
+    } catch (error) {
+      console.warn("⚠️ Error en logout backend:", error.message);
+      // Continuar con el logout local aunque falle el backend
+    } finally {
+      // Limpiar storage local
+      localStorage.removeItem("token");
+      localStorage.removeItem("admin");
+    }
   },
 
+  /**
+   * Obtener usuario actual desde localStorage
+   * @returns {object|null}
+   */
   getCurrentUser: () => {
-    return JSON.parse(localStorage.getItem("user"));
+    try {
+      const admin = localStorage.getItem("admin");
+      return admin ? JSON.parse(admin) : null;
+    } catch {
+      return null;
+    }
   },
 
-  // O si usas fetch:
-  loginFetch: async (username, password) => {
-    const formData = new URLSearchParams();
-    formData.append("username", username);
-    formData.append("password", password);
+  /**
+   * Verificar si hay sesión activa
+   * @returns {boolean}
+   */
+  isAuthenticated: () => {
+    return !!localStorage.getItem("token");
+  },
 
-    const response = await fetch(API.admin.login, {
-      // ← Usar API config
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: formData,
+  /**
+   * Obtener token actual
+   * @returns {string|null}
+   */
+  getToken: () => {
+    return localStorage.getItem("token");
+  },
+
+  /**
+   * Refresh del perfil del usuario (opcional)
+   * @returns {Promise<object>}
+   */
+  refreshProfile: async () => {
+    const token = authService.getToken();
+    if (!token) throw new Error("No hay token");
+
+    const response = await axios.get(`${API}/auth/profile`, {
+      headers: { Authorization: `Bearer ${token}` },
     });
 
-    if (!response.ok) {
-      throw new Error("Login failed");
+    if (response.data?.success && response.data?.data?.admin) {
+      localStorage.setItem("admin", JSON.stringify(response.data.data.admin));
     }
 
-    return await response.json();
+    return response.data;
   },
 };
 
