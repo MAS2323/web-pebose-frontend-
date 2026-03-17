@@ -6,7 +6,7 @@ import { AdminTable } from "../../components/admin/ui/AdminTable";
 import { AdminModal } from "../../components/admin/ui/AdminModal";
 import { AdminInput } from "../../components/admin/ui/AdminInput";
 import { AdminToast } from "../../components/admin/ui/AdminToast";
-import { especialidadService } from "../../services/admin/especialidadService";
+import especialidadService from "../../services/admin/especialidadService";
 
 export const AdminEspecialidades = () => {
   const [especialidades, setEspecialidades] = useState([]);

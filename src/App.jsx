@@ -23,6 +23,7 @@ import { AdminContactos } from "./pages/admin/AdminContactos";
 import { AdminConfig } from "./pages/admin/AdminConfig";
 import CreateSlide from "./pages/admin/CreateSlide";
 import { EditSlide } from "./pages/admin/EditSlide";
+import { EspecialidadForm } from "./components/admin/forms/EspecialidadForm";
 
 // Componente para proteger rutas de admin
 const ProtectedRoute = ({ children }) => {
@@ -61,7 +62,6 @@ function AppRoutes() {
       <Route path="/" element={<Home />} />
       <Route path="/ceep" element={<CEEP />} />
       <Route path="/ceep/especialidad/:id" element={<EspecialidadDetalle />} />
-
       {/* Rutas del Admin */}
       <Route
         path="/admin/login"
@@ -71,7 +71,6 @@ function AppRoutes() {
           </PublicAdminRoute>
         }
       />
-
       <Route
         path="/admin"
         element={
@@ -83,7 +82,6 @@ function AppRoutes() {
         <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="hero" element={<AdminHero />} />
-        <Route path="especialidades" element={<AdminEspecialidades />} />
         <Route path="ceep" element={<AdminCEEP />} />
         <Route path="contactos" element={<AdminContactos />} />
         <Route path="config" element={<AdminConfig />} />
@@ -91,7 +89,15 @@ function AppRoutes() {
         {/* ← NUEVA RUTA */}
         <Route path="hero/editar/:id" element={<EditSlide />} />
       </Route>
-
+      {/* ✅ Especialidades - NUEVAS RUTAS */}
+      <Route path="especialidades" element={<AdminEspecialidades />} />
+      <Route path="especialidades/nuevo" element={<EspecialidadForm />} />{" "}
+      {/* ← CREAR */}
+      <Route
+        path="especialidades/editar/:id"
+        element={<EspecialidadForm />}
+      />{" "}
+      {/* ← EDITAR */}
       {/* Redirección 404 */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
