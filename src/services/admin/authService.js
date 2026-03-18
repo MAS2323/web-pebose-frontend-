@@ -7,7 +7,7 @@ const API_BASE =
 
 // Instancia de axios con configuración global
 const api = axios.create({
-  baseURL: `${API_BASE}/api`, // ← Asegura que todas las rutas empiecen con /api
+  baseURL: `${API_BASE}`, // ← Asegura que todas las rutas empiecen con /api
   headers: {
     "Content-Type": "application/json",
   },
