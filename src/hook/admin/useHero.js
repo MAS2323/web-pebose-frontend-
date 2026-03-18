@@ -14,7 +14,7 @@ export const useHero = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API}/hero`, {
+      const response = await fetch(`${API}/api/hero`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -44,7 +44,7 @@ export const useHero = () => {
   // ✅ Crear slide
   const createSlide = async (slideData) => {
     try {
-      const response = await fetch(`${API}/hero`, {
+      const response = await fetch(`${API}/api/hero`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -70,7 +70,7 @@ export const useHero = () => {
   // ✅ Actualizar slide
   const updateSlide = async (id, slideData) => {
     try {
-      const response = await fetch(`${API}/hero/${id}`, {
+      const response = await fetch(`${API}/api/hero/${id}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -101,7 +101,7 @@ export const useHero = () => {
     }
 
     try {
-      const response = await fetch(`${API}/hero/${id}`, {
+      const response = await fetch(`${API}/api/hero/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
