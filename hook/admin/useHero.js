@@ -2,7 +2,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { useAdmin } from "../../context/AdminContext";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://pebosebackend-production.up.railway.app";
 
 export const useHero = () => {
   const { authFetch } = useAdmin();
