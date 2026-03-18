@@ -77,7 +77,7 @@ export const CreateSlide = () => {
       const token = localStorage.getItem("token");
 
       // ✅ Enviar al backend
-      const response = await fetch(`${API}/hero`, {
+      const response = await fetch(`${API}/api/hero`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
