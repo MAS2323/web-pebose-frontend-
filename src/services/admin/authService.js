@@ -1,9 +1,21 @@
-// frontend/src/services/authService.js
 import axios from "axios";
-import { API, ENDPOINTS } from "../../config/api";
 
-// 🔐 Interceptor para agregar token automáticamente
-axios.interceptors.request.use(
+// ✅ URL correcta con /api
+const API =
+  import.meta.env.VITE_API_URL || "https://pebose-backend.onrender.com/api";
+
+// const API = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
+// Crear instancia de axios con configuración base
+const api = axios.create({
+  baseURL: API,
+  headers: {
+    "Content-Type": "application/json",
+  },
+  withCredentials: true, // Importante para cookies/sesiones
+});
+
+// Interceptor para agregar token
+api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -14,13 +26,13 @@ axios.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
-// 🔐 Interceptor para manejar errores de autenticación
-axios.interceptors.response.use(
+// Interceptor para errores 401
+api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Token inválido o expirado → cerrar sesión
-      authService.logout();
+      localStorage.removeItem("token");
+      localStorage.removeItem("admin");
       window.location.href = "/admin/login";
     }
     return Promise.reject(error);

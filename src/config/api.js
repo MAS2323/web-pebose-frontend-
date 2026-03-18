@@ -1,47 +1,58 @@
 // frontend/src/config/api.js
 
-// 🔗 URL base de la API
-// ✅ Vite usa import.meta.env (NO process.env)
+// 🔗 URL base de la API - SIN ESPACIOS AL FINAL
 export const API =
-  import.meta.env.VITE_API_URL || "https://pebose-backend.onrender.com"; // ← Fallback para desarrollo
+  import.meta.env.VITE_API_URL || "https://pebose-backend.onrender.com/api"; // ← Sin espacio
+
+// export const API = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
 
 // 🗺️ Endpoints organizados por módulo
 export const ENDPOINTS = {
   // 🔐 AUTH
   AUTH: {
-    LOGIN: `${API}/auth/login`, // POST
-    PROFILE: `${API}/auth/profile`, // GET (con token)
-    LOGOUT: `${API}/auth/logout`, // POST (con token)
+    LOGIN: `/auth/login`, // ← Solo la ruta, sin API
+    PROFILE: `/auth/profile`,
+    LOGOUT: `/auth/logout`,
   },
 
   // 🎨 HERO SLIDER
   HERO: {
-    PUBLIC: `${API}/hero/public`, // GET (público)
-    LIST: `${API}/hero`, // GET (admin)
-    CREATE: `${API}/hero`, // POST (admin, multipart)
-    UPDATE: (id) => `${API}/hero/${id}`, // PUT (admin)
-    DELETE: (id) => `${API}/hero/${id}`, // DELETE (admin)
+    PUBLIC: `/hero/public`,
+    LIST: `/hero`,
+    CREATE: `/hero`,
+    UPDATE: (id) => `/hero/${id}`,
+    DELETE: (id) => `/hero/${id}`,
   },
 
-  // 🛡️ ADMIN PANEL (ejemplo de endpoint adicional)
+  // 🛡️ ADMIN PANEL
   ADMIN: {
-    STATS: `${API}/admin/stats`, // ← Agrega esto
-    DASHBOARD: `${API}/admin/dashboard`,
+    STATS: `/admin/stats`,
+    DASHBOARD: `/admin/dashboard`,
   },
 
   // 🏢 INSTALACIONES
   INSTALACIONES: {
-    PUBLIC: `${API}/instalaciones/public`, // GET (público)
-    LIST: `${API}/instalaciones`, // GET (admin)
-    CREATE: `${API}/instalaciones`, // POST (admin)
-    UPDATE: (id) => `${API}/instalaciones/${id}`,
-    DELETE: (id) => `${API}/instalaciones/${id}`,
+    PUBLIC: `/instalaciones/public`,
+    LIST: `/instalaciones`,
+    CREATE: `/instalaciones`,
+    UPDATE: (id) => `/instalaciones/${id}`,
+    DELETE: (id) => `/instalaciones/${id}`,
+  },
+
+  // 📄 DOCUMENTOS - AGREGAR ESTO
+  DOCUMENTOS: {
+    UPLOAD: `/documentos/upload`,
+    LIST: `/documentos`,
+    BY_USER: (email) => `/documentos/user/${email}`,
   },
 };
 
-// ✅ Función fetchApi reutilizable con manejo de errores
+// ✅ Función fetchApi corregida
 export const fetchApi = async (endpoint, options = {}) => {
   const token = localStorage.getItem("token");
+
+  // Construir URL correctamente
+  const url = endpoint.startsWith("http") ? endpoint : `${API}${endpoint}`;
 
   const config = {
     headers: {
@@ -52,33 +63,25 @@ export const fetchApi = async (endpoint, options = {}) => {
     ...options,
   };
 
-  // Si es FormData (subida de archivos), quitar Content-Type JSON
+  // Si es FormData, quitar Content-Type
   if (options.body instanceof FormData) {
     delete config.headers["Content-Type"];
   }
 
   try {
-    // Construir URL completa
-    const url = endpoint.startsWith("http")
-      ? endpoint
-      : `${API}${endpoint.startsWith("/") ? endpoint : `/${endpoint}`}`;
-
     const response = await fetch(url, config);
 
-    // Manejar errores HTTP
     if (!response.ok) {
       const error = await response.json().catch(() => ({}));
       throw new Error(error.message || `HTTP ${response.status}`);
     }
 
-    // Respuesta vacía (204 No Content)
     if (response.status === 204) return null;
 
     return await response.json();
   } catch (error) {
     console.error("❌ Error en fetchApi:", error.message);
 
-    // Si es error 401, cerrar sesión automáticamente
     if (error.message?.includes("401")) {
       localStorage.removeItem("token");
       localStorage.removeItem("admin");
@@ -88,6 +91,16 @@ export const fetchApi = async (endpoint, options = {}) => {
     throw error;
   }
 };
+
+// Helper para uploads
+export const uploadDocumento = async (formData) => {
+  return fetchApi(ENDPOINTS.DOCUMENTOS.UPLOAD, {
+    method: "POST",
+    body: formData,
+  });
+};
+
+// Compatibilidad
 export const API_COMPAT = {
   admin: {
     stats: ENDPOINTS.ADMIN.STATS,
@@ -95,5 +108,4 @@ export const API_COMPAT = {
   },
 };
 
-// 🎯 Exportación por defecto para compatibilidad
-export default { API, ENDPOINTS, fetchApi };
+export default { API, ENDPOINTS, fetchApi, uploadDocumento };
