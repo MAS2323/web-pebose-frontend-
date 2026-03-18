@@ -85,7 +85,7 @@ export const AdminDashboard = () => {
   const fetchStats = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(`${API}/admin/stats`, {
+      const response = await axios.get(`${API}/api/admin/stats`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setStats(response.data?.data?.stats || {});
@@ -100,7 +100,7 @@ export const AdminDashboard = () => {
     setDocLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API}/documentos`, {
+      const response = await fetch(`${API}/api/documentos`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -177,7 +177,7 @@ export const AdminDashboard = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.patch(
-        `${API}/documentos/${id}`,
+        `${API}/api/documentos/${id}`,
         { estado: nuevoEstado },
         { headers: { Authorization: `Bearer ${token}` } },
       );
@@ -192,7 +192,7 @@ export const AdminDashboard = () => {
     if (!confirm("¿Eliminar permanentemente?")) return;
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`${API}/documentos/${id}`, {
+      await axios.delete(`${API}/api/documentos/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchDocumentos();
