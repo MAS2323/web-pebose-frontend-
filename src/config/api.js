@@ -2,7 +2,8 @@
 
 // 🔗 URL base de la API - SIN ESPACIOS AL FINAL
 export const API =
-  import.meta.env.VITE_API_URL || "https://pebose-backend.onrender.com/api"; // ← Sin espacio
+  import.meta.env.VITE_API_URL ||
+  "https://pebosebackend-production.up.railway.app/api"; // ← Sin espacio
 
 // export const API = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
 

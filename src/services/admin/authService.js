@@ -2,7 +2,8 @@ import axios from "axios";
 
 // ✅ URL correcta con /api
 const API =
-  import.meta.env.VITE_API_URL || "https://pebose-backend.onrender.com/api";
+  import.meta.env.VITE_API_URL ||
+  "https://pebosebackend-production.up.railway.app/api";
 
 // const API = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
 // Crear instancia de axios con configuración base
