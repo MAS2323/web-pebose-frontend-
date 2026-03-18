@@ -1,10 +1,11 @@
-// src/hook/admin/useHero.js
+// src/hooks/admin/useHero.js
 import { useState, useEffect, useCallback } from "react";
 import { useAdmin } from "../../context/AdminContext";
 
-const API_URL =
+const API_BASE =
   import.meta.env.VITE_API_URL ||
   "https://pebosebackend-production.up.railway.app";
+const HERO_PREFIX = "/api/hero"; // Centraliza el prefijo
 
 export const useHero = () => {
   const { authFetch } = useAdmin();
@@ -12,71 +13,83 @@ export const useHero = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Obtener slides
   const fetchSlides = useCallback(async () => {
     setLoading(true);
+    setError(null);
     try {
-      const response = await fetch(`${API_URL}/api/hero/slides`);
-      if (!response.ok) throw new Error("Error al cargar slides");
+      const response = await fetch(`${API_BASE}${HERO_PREFIX}/slides`, {
+        credentials: "include", // si usas cookies/auth
+      });
+      if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(
+          `Error al cargar slides: ${response.status} - ${errText}`,
+        );
+      }
       const data = await response.json();
-      setSlides(data);
+      setSlides(data || []);
     } catch (err) {
+      console.error("fetchSlides error:", err);
       setError(err.message);
     } finally {
       setLoading(false);
     }
   }, []);
 
-  // Crear slide
   const createSlide = async (slideData) => {
     try {
-      const response = await authFetch("/api/hero/slides", {
+      const response = await authFetch(`${HERO_PREFIX}/slides`, {
         method: "POST",
         body: JSON.stringify(slideData),
       });
-      if (!response.ok) throw new Error("Error al crear slide");
+      if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(`Error al crear: ${response.status} - ${errText}`);
+      }
       const newSlide = await response.json();
       setSlides((prev) => [...prev, newSlide]);
-      return { success: true };
+      return { success: true, data: newSlide };
     } catch (err) {
+      console.error("createSlide error:", err);
       return { success: false, error: err.message };
     }
   };
 
-  // Actualizar slide
+  // updateSlide, deleteSlide, reorderSlides → similar, usa `${HERO_PREFIX}/slides/...`
+
   const updateSlide = async (id, slideData) => {
     try {
-      const response = await authFetch(`/api/hero/slides/${id}`, {
+      const response = await authFetch(`${HERO_PREFIX}/slides/${id}`, {
         method: "PUT",
         body: JSON.stringify(slideData),
       });
       if (!response.ok) throw new Error("Error al actualizar slide");
       const updated = await response.json();
-      setSlides((prev) => prev.map((s) => (s.id === id ? updated : s)));
+      setSlides((prev) =>
+        prev.map((s) => (s._id === id || s.id === id ? updated : s)),
+      );
       return { success: true };
     } catch (err) {
       return { success: false, error: err.message };
     }
   };
 
-  // Eliminar slide
   const deleteSlide = async (id) => {
     try {
-      const response = await authFetch(`/api/hero/slides/${id}`, {
+      const response = await authFetch(`${HERO_PREFIX}/slides/${id}`, {
         method: "DELETE",
       });
       if (!response.ok) throw new Error("Error al eliminar slide");
-      setSlides((prev) => prev.filter((s) => s.id !== id));
+      setSlides((prev) => prev.filter((s) => (s._id || s.id) !== id));
       return { success: true };
     } catch (err) {
       return { success: false, error: err.message };
     }
   };
 
-  // Reordenar slides
   const reorderSlides = async (orderedIds) => {
     try {
-      const response = await authFetch("/api/hero/slides/reorder", {
+      const response = await authFetch(`${HERO_PREFIX}/slides/reorder`, {
         method: "PUT",
         body: JSON.stringify({ order: orderedIds }),
       });
