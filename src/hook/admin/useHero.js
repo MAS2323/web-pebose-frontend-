@@ -8,28 +8,40 @@ const API_BASE =
 const HERO_PREFIX = "/api/hero"; // Centraliza el prefijo
 
 export const useHero = () => {
-  const { authFetch } = useAdmin();
+  const adminContext = useAdmin();
+  const authFetch = adminContext?.authFetch; // ← acceso seguro
   const [slides, setSlides] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
   const fetchSlides = useCallback(async () => {
     setLoading(true);
     setError(null);
+
+    if (typeof authFetch !== "function") {
+      const msg =
+        "authFetch no disponible o no es función. Revisa AdminContext.";
+      console.error(msg, adminContext);
+      setError(msg);
+      setLoading(false);
+      return;
+    }
+
     try {
-      const response = await authFetch("/api/hero/slides");
+      const response = await authFetch(`${HERO_PREFIX}/slides`);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
       const data = await response.json();
       console.log("[fetchSlides] Datos recibidos:", data);
-      setSlides(Array.isArray(data) ? data : data?.slides || data?.data || []);
+      setSlides(Array.isArray(data) ? data : []);
     } catch (err) {
-      console.error("[fetchSlides] Error:", err);
-      setError(err.message || "No se pudieron cargar los slides");
+      console.error("[fetchSlides] Error completo:", err);
+      setError(err.message || "Fallo al cargar slides");
       setSlides([]);
     } finally {
       setLoading(false);
     }
   }, [authFetch]);
-
   const createSlide = async (slideData) => {
     try {
       const response = await authFetch("/api/hero/slides", {
@@ -96,7 +108,7 @@ export const useHero = () => {
 
   return {
     slides,
-    loading,
+    isLoading: loading,
     error,
     createSlide,
     updateSlide,
