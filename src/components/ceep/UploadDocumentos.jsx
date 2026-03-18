@@ -112,7 +112,7 @@ export const UploadDocumentos = () => {
       }
 
       // Subir al backend
-      const response = await fetch(`${API}/api/documentos/upload`, {
+      const response = await fetch(`${API}/documentos/upload`, {
         method: "POST",
         body: data,
         // NO poner Content-Type, el navegador lo hace con FormData

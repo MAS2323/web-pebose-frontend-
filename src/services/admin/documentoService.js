@@ -5,15 +5,11 @@ import { API } from "../../config/api";
 const documentoService = {
   // Subir documento (público)
   upload: async (formData) => {
-    const { data } = await axios.post(
-      `${API}/api/documentos/upload`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+    const { data } = await axios.post(`${API}/documentos/upload`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
       },
-    );
+    });
     return data;
   },
 
