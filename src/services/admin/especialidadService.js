@@ -10,7 +10,7 @@ export const especialidadService = {
   getAllPublic: async (params = {}) => {
     const qs = new URLSearchParams(params).toString();
     const { data } = await axios.get(
-      `${import.meta.env.VITE_API_URL || "https://pebose-backend.onrender.com"}/especialidades/public${qs ? `?${qs}` : ""}`,
+      `${import.meta.env.VITE_API_URL || "https://pebose-backend.onrender.com/api"}/especialidades/public${qs ? `?${qs}` : ""}`,
     );
     return data;
   },
@@ -18,7 +18,7 @@ export const especialidadService = {
   // GET por ID público
   getByIdPublic: async (id) => {
     const { data } = await axios.get(
-      `${import.meta.env.VITE_API_URL || "https://pebose-backend.onrender.com"}/especialidades/public/${id}`,
+      `${import.meta.env.VITE_API_URL || "https://pebose-backend.onrender.com/api"}/especialidades/public/${id}`,
     );
     return data;
   },
@@ -27,7 +27,7 @@ export const especialidadService = {
   getAll: async () => {
     const token = localStorage.getItem("token");
     const { data } = await axios.get(
-      `${import.meta.env.VITE_API_URL || "https://pebose-backend.onrender.com"}/especialidades`,
+      `${import.meta.env.VITE_API_URL || "https://pebose-backend.onrender.com/api"}/especialidades`,
       { headers: { Authorization: `Bearer ${token}` } },
     );
     return data;
@@ -37,7 +37,7 @@ export const especialidadService = {
   getById: async (id) => {
     const token = localStorage.getItem("token");
     const { data } = await axios.get(
-      `${import.meta.env.VITE_API_URL || "https://pebose-backend.onrender.com"}/especialidades/${id}`,
+      `${import.meta.env.VITE_API_URL || "https://pebose-backend.onrender.com/api"}/especialidades/${id}`,
       { headers: { Authorization: `Bearer ${token}` } },
     );
     return data;
@@ -59,7 +59,7 @@ export const especialidadService = {
     });
 
     const { data } = await axios.post(
-      `${import.meta.env.VITE_API_URL || "https://pebose-backend.onrender.com"}/especialidades`,
+      `${import.meta.env.VITE_API_URL || "https://pebose-backend.onrender.com/api"}/especialidades`,
       body,
       { headers: { Authorization: `Bearer ${token}` } },
     );
@@ -82,7 +82,7 @@ export const especialidadService = {
     });
 
     const { data } = await axios.put(
-      `${import.meta.env.VITE_API_URL || "https://pebose-backend.onrender.com"}/especialidades/${id}`,
+      `${import.meta.env.VITE_API_URL || "https://pebose-backend.onrender.com/api"}/especialidades/${id}`,
       body,
       { headers: { Authorization: `Bearer ${token}` } },
     );
@@ -93,7 +93,7 @@ export const especialidadService = {
   delete: async (id) => {
     const token = localStorage.getItem("token");
     const { data } = await axios.delete(
-      `${import.meta.env.VITE_API_URL || "https://pebose-backend.onrender.com"}/especialidades/${id}`,
+      `${import.meta.env.VITE_API_URL || "https://pebose-backend.onrender.com/api"}/especialidades/${id}`,
       { headers: { Authorization: `Bearer ${token}` } },
     );
     return data;
