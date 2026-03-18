@@ -1,72 +1,40 @@
-// frontend/src/hooks/admin/useHero.js
-import { useState, useEffect, useCallback } from "react";
-import { API } from "../../config/api";
-
-export const useHero = () => {
+const { authFetch } = useAdmin();
   const [slides, setSlides] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const token = localStorage.getItem("token");
-
-  // ✅ Obtener slides - ACCEDER A result.data (NO result.slides)
   const fetchSlides = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API}/api/hero`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-
-      const result = await response.json();
-
-      console.log("📦 Backend response:", result);
-
-      // ✅ Backend devuelve: { success: true, count: N, data: [...] }
-      // Los slides están en result.data, NO en result.slides
-      setSlides(result.data || []);
+      const response = await authFetch("/api/hero/slides");
+      const data = await response.json();
+      console.log("[fetchSlides] Datos recibidos:", data);
+      setSlides(Array.isArray(data) ? data : data?.slides || data?.data || []);
     } catch (err) {
-      console.error("❌ Error fetching slides:", err.message);
-      setError(err.message);
-      setSlides([]); // Fallback a array vacío
+      console.error("[fetchSlides] Error:", err);
+      setError(err.message || "No se pudieron cargar los slides");
+      setSlides([]);
     } finally {
       setLoading(false);
     }
-  }, [API, token]);
+  }, [authFetch]);
 
-  // ✅ Crear slide
   const createSlide = async (slideData) => {
     try {
-      const response = await fetch(`${API}/api/hero`, {
+      const response = await authFetch("/api/hero/slides", {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify(slideData),
       });
-
-      if (!response.ok) {
-        const err = await response.json();
-        throw new Error(err.message || "Error creando slide");
-      }
-
-      const result = await response.json();
-      await fetchSlides(); // Refrescar lista
-      return result.data;
+      const newSlide = await response.json();
+      console.log("[createSlide] Nuevo slide:", newSlide);
+      setSlides((prev) => [...prev, newSlide]);
+      return { success: true };
     } catch (err) {
-      console.error("❌ Error creating slide:", err.message);
-      throw err;
+      console.error("[createSlide] Error:", err);
+      return { success: false, error: err.message };
     }
   };
-
   // ✅ Actualizar slide
   const updateSlide = async (id, slideData) => {
     try {
