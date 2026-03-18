@@ -34,7 +34,7 @@ const Hero = () => {
     },
     {
       image:
-        "https://res.cloudinary.com/masonewe/image/upload/v1773427777/pebose/hero/qeubq7l286fpagsp1hy3.jpg",
+        "https://res.cloudinary.com/ masonewe/image/upload/v1773427715/pebose/hero/yn9zvrvat3kl8aa93m1c.jpg",
       alt: "Eventos",
     },
   ];
