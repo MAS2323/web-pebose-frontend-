@@ -1,4 +1,14 @@
-const { authFetch } = useAdmin();
+// src/hooks/admin/useHero.js
+import { useState, useEffect, useCallback } from "react";
+import { useAdmin } from "../../context/AdminContext";
+
+const API_BASE =
+  import.meta.env.VITE_API_URL ||
+  "https://pebosebackend-production.up.railway.app ";
+const HERO_PREFIX = "/api/hero"; // Centraliza el prefijo
+
+export const useHero = () => {
+  const { authFetch } = useAdmin();
   const [slides, setSlides] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -35,7 +45,6 @@ const { authFetch } = useAdmin();
       return { success: false, error: err.message };
     }
   };
-  // updateSlide, deleteSlide, reorderSlides → similar, usa `${HERO_PREFIX}/slides/...`
 
   const updateSlide = async (id, slideData) => {
     try {
@@ -93,6 +102,6 @@ const { authFetch } = useAdmin();
     updateSlide,
     deleteSlide,
     reorderSlides,
-    refresh: fetchSlides,
+    refreshSlides: fetchSlides,
   };
 };

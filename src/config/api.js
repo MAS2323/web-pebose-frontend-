@@ -18,11 +18,11 @@ export const ENDPOINTS = {
 
   // 🎨 HERO SLIDER
   HERO: {
-    PUBLIC: `/hero/public`,
-    LIST: `/hero`,
-    CREATE: `/hero`,
-    UPDATE: (id) => `/hero/${id}`,
-    DELETE: (id) => `/hero/${id}`,
+    PUBLIC: `/hero/public/slides`,
+    LIST: `/hero/slides`,
+    CREATE: `/hero/slides`,
+    UPDATE: (id) => `/hero/slides/${id}`,
+    DELETE: (id) => `/hero/slides/${id}`,
   },
 
   // 🛡️ ADMIN PANEL

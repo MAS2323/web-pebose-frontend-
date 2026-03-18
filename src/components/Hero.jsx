@@ -42,8 +42,8 @@ const Hero = () => {
   useEffect(() => {
     const fetchSlides = async () => {
       try {
-        console.log("🔄 [Hero] Cargando desde:", `${API}/hero/public`);
-        const response = await fetch(`${API}/hero/public`);
+        console.log("🔄 [Hero] Cargando desde:", `${API}/hero/public/slides`);
+        const response = await fetch(`${API}/hero/public/slides`);
 
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
