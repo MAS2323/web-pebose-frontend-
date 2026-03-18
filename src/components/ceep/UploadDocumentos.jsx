@@ -334,7 +334,9 @@ export const UploadDocumentos = () => {
                   <p className="text-sm text-gray-600 font-medium">
                     Click para seleccionar un archivo
                   </p>
-                  <p className="text-xs text-gray-400 mt-1">PDF • Máx 25MB</p>
+                  <p className="text-xs text-gray-400 mt-1">
+                    PDF, DOC, DOCX, JPG, PNG, ZIP, RAR • Máx 25MB
+                  </p>
                 </div>
               )}
             </div>
