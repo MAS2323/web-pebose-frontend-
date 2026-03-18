@@ -19,22 +19,22 @@ const Hero = () => {
   const defaultSlides = [
     {
       image:
-        "https://placehold.co/1920x1080/5D1A1A/FFFFFF?text=Aula+Moderna&font=roboto",
+        "https://res.cloudinary.com/masonewe/image/upload/v1773869845/pebose/hero/hero-1773869844001-ufyy6qtd.jpg",
       alt: "Aula moderna",
     },
     {
       image:
-        "https://placehold.co/1920x1080/6B7B5F/FFFFFF?text=Estudiantes&font=roboto",
+        "https://res.cloudinary.com/masonewe/image/upload/v1773646890/pebose/hero/hero-1773646885438-tjudwar6.jpg",
       alt: "Estudiantes",
     },
     {
       image:
-        "https://placehold.co/1920x1080/5D1A1A/FFFFFF?text=Instalaciones&font=roboto",
+        "https://res.cloudinary.com/masonewe/image/upload/v1773646890/pebose/hero/hero-1773646885438-tjudwar6.jpg",
       alt: "Instalaciones",
     },
     {
       image:
-        "https://placehold.co/1920x1080/6B7B5F/FFFFFF?text=Eventos&font=roboto",
+        "https://res.cloudinary.com/masonewe/image/upload/v1773427777/pebose/hero/qeubq7l286fpagsp1hy3.jpg",
       alt: "Eventos",
     },
   ];
