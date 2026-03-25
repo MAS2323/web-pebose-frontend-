@@ -13,22 +13,26 @@ const HeroCEEP = () => {
 
   const slides = [
     {
-      image: "/images/ceep/aula-enfermeria.jpg",
+      image:
+        "https://res.cloudinary.com/masonewe/image/upload/v1774420482/pebose/hero/hero-1774420480313-nkf2ulvb.jpg",
       title: "Formación Profesional de Excelencia",
       subtitle: "20 especialidades para tu futuro laboral",
     },
     {
-      image: "/images/ceep/laboratorio.jpg",
+      image:
+        "https://res.cloudinary.com/masonewe/image/upload/v1774420570/pebose/hero/hero-1774420564063-bmi6g2r1.jpg",
       title: "Instalaciones Modernas",
       subtitle: "Equipamiento de última generación",
     },
     {
-      image: "/images/ceep/estudiantes-ceep.jpg",
+      image:
+        "https://res.cloudinary.com/masonewe/image/upload/v1774420529/pebose/hero/hero-1774420528022-zz52br14.jpg",
       title: "Práctica desde el Primer Día",
       subtitle: "Aprendizaje hands-on con profesionales",
     },
     {
-      image: "/images/ceep/graduacion.jpg",
+      image:
+        "https://res.cloudinary.com/masonewe/image/upload/v1774420507/pebose/hero/hero-1774420506302-p0eqs1li.jpg",
       title: "Titulación Oficial",
       subtitle: "Certificados reconocidos nacionalmente",
     },

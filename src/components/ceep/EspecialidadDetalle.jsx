@@ -163,7 +163,8 @@ const EspecialidadDetalle = () => {
       icono: "ChefHat",
       descripcion:
         "Técnico Superior en Cocina y Hostelería. Formación integral para desempeñarse en la industria gastronómica y hotelera con altos estándares de calidad, combinando la tradición culinaria local con técnicas internacionales modernas.",
-      imagen: "/images/ceep/cocina-hosteleria.jpg",
+      imagen:
+        "https://res.cloudinary.com/masonewe/image/upload/v1774420529/pebose/hero/hero-1774420528022-zz52br14.jpg",
       modulos: [
         // Primer Año
         "Fundamentos de Cocina y Gastronomía",
